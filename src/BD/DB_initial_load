@@ -1,0 +1,249 @@
+CREATE TABLE category (
+    id          SERIAL PRIMARY KEY,
+    name_en     VARCHAR(100) NOT NULL,
+    name_es     VARCHAR(100) NOT NULL
+);
+
+INSERT INTO category (name_en, name_es) VALUES
+    ('Food', 'Alimentos'),
+    ('Drinks', 'Bebidas');
+
+CREATE TABLE product_type (
+    id          SERIAL PRIMARY KEY,
+    code        CHAR(1)      NOT NULL UNIQUE,  -- 'T', 'V', 'B'
+    name_en     VARCHAR(100) NOT NULL,
+    name_es     VARCHAR(100) NOT NULL
+);
+
+
+INSERT INTO product_type (code, name_en, name_es) VALUES
+    ('T', 'Traditional', 'Tradicional'),
+    ('V', 'Vegan',       'Vegano'),
+    ('B', 'Both',        'Ambos');
+
+
+CREATE TABLE product (
+    id                  SERIAL PRIMARY KEY,
+    name_short_es       VARCHAR(100) NOT NULL,
+    name_long_es        VARCHAR(200) NOT NULL,
+    name_short_en       VARCHAR(100) NOT NULL,
+    name_long_en        VARCHAR(200) NOT NULL,
+    production_base     INT NOT NULL,
+    price_sale_eur      DECIMAL(10,2) NOT NULL
+);
+
+INSERT INTO product (
+    name_short_es, name_long_es,
+    name_short_en, name_long_en,
+    production_base, price_sale_eur
+) VALUES
+    ('Pozole Rojo',        'Pozole Tradicional Rojo',     'Red Pozole',         'Traditional Red Pozole',     50, 14.00),
+    ('Pozole Vegano',      'Pozole Rojo Vegano',     'Vegan Pozole',       'Vegan Red Pozole',     50, 14.00),
+    ('Nachos',             'Nachos con Guacamole Tradicional',     'Nachos',             'Traditional Nachos with Guacamole',     50, 10.00),
+    ('Nachos Veganos',     'Nachos con Guacamole Vegano',     'Vegan Nachos',       'Vegan Nachos with Guacamole',     50, 11.00),
+    ('Chilaquiles',        'Chilaquiles Tradicionales',     'Chilaquiles',        'Traditional Chilaquiles',     50, 10.00),
+    ('Chilaquiles Veganos','Chilaquiles Veganos',     'Vegan Chilaquiles',  'Vegan Chilaquiles',     50, 11.00),
+    ('Tacos al Pastor',    'Tacos al Pastor (3 piezas)',     'Al Pastor Tacos',    'Al Pastor Tacos (3 pieces)',     50, 12.00),
+    ('Tacos de Carnitas',  'Tacos de Carnitas (3 piezas)',     'Carnitas Tacos',     'Carnitas Tacos (3 pieces)',     50, 12.00);
+
+CREATE TABLE ingredient (
+    id                  SERIAL PRIMARY KEY,
+    name_es             VARCHAR(100) NOT NULL,
+    name_en             VARCHAR(100),
+    base_unit           VARCHAR(50) NOT NULL,
+    unit_cost_eur       DECIMAL(10,2) NOT NULL,
+    UNIQUE(name_es, base_unit)
+);
+
+INSERT INTO ingredient (name_es, name_en, base_unit, unit_cost_eur) VALUES
+    ('Aceite vegetal',                'Vegetable oil',                 'L',                       2.50),
+    ('Achiote en pasta',              'Achiote paste',                 'kg',                     10.00),
+    ('Agua',                          'Water',                         'L',                       0.00),
+    ('Aguacate',                      'Avocado',                       'kg',                      4.50),
+    ('Ajo',                           'Garlic',                        'kg',                      4.00),
+    ('Caldo vegetal concentrado',     'Vegetable stock concentrate',   'kg',                      8.00),
+    ('Carne de cerdo',                'Pork meat',                     'kg',                      7.00),
+    ('Carne de cerdo (pierna/paleta)','Pork leg/shoulder',             'kg',                      6.50),
+    ('Cebolla',                       'Onion',                         'kg',                      1.20),
+    ('Chile guajillo seco',           'Dried guajillo chili',          'kg',                     12.00),
+    ('Chile serrano',                 'Serrano chili',                 'kg',                      5.00),
+    ('Cilantro',                      'Coriander (cilantro)',          'kg',                      8.00),
+    ('Coca-Cola (o refresco)',        'Cola (soft drink)',             'L',                       1.50),
+    ('Crema',                         'Cream',                         'L',                       3.50),
+    ('Crema vegana',                  'Vegan cream',                   'L',                       4.50),
+    ('Especias mixtas',               'Mixed spices',                  'kg',                     18.00),
+    ('Frijoles refritos',             'Refried beans',                 'kg',                      2.50),
+    ('Frijoles refritos veganos',     'Vegan refried beans',           'kg',                      2.80),
+    ('Jalapeños en vinagre',          'Pickled jalapeños',             'kg',                      4.00),
+    ('Jugo de naranja',               'Orange juice',                  'L',                       2.00),
+    ('Leche',                         'Milk',                          'L',                       1.20),
+    ('Lechuga',                       'Lettuce',                       'Pza / Piece',             1.80),
+    ('Lechuga',                       'Lettuce',                       '300 gr',                  2.14),
+    ('Limón',                         'Lime',                          'kg',                      2.80),
+    ('Manteca de cerdo',              'Pork lard',                     'kg',                      4.00),
+    ('Maíz para pozole precocido',    'Pre-cooked hominy corn',        'Lata 3.1kg / Can 3.1kg', 16.95),
+    ('Maíz para pozole precocido',    'Pre-cooked hominy corn',        'Lata 800g / Can 800g',    3.00),
+    ('Naranja',                       'Orange',                        'kg',                      2.00),
+    ('Orégano seco',                  'Dried oregano',                 'kg',                     20.00),
+    ('Piña',                          'Pineapple',                     'kg',                      2.20),
+    ('Proteína de soja texturizada',  'Textured soy protein',          'kg',                      6.00),
+    ('Puerco',                        'Pork',                          'kg',                     10.00),
+    ('Queso fresco',                  'Fresh cheese',                  'kg',                      8.00),
+    ('Queso rallado',                 'Grated cheese',                 'kg',                      8.00),
+    ('Queso rallado vegano',          'Vegan grated cheese',           'kg',                     11.00),
+    ('Rábano',                        'Radish',                        '450 gr',                  1.67),
+    ('Rábano',                        'Radish',                        'kg',                      2.50),
+    ('Sal',                           'Salt',                          'kg',                      0.80),
+    ('Salsa roja',                    'Red salsa',                     'kg',                      2.50),
+    ('Salsa verde o roja',            'Green or red salsa',            'L',                       3.00),
+    ('Setas u hongos',                'Mushrooms',                     'kg',                      7.00),
+    ('Tomate',                        'Tomato',                        'kg',                      2.00),
+    ('Tortillas de maíz',             'Corn tortillas',                'pza / Piece',             0.12),
+    ('Tortillas de maíz (para freír)','Corn tortillas (for frying)',   'pza / Piece',             0.12),
+    ('Tostadas',                      'Tostadas (fried tortillas)',    'kg',                      6.00),
+    ('Totopos (nachos)',              'Tortilla chips (nachos)',       'kg',                      4.50),
+    ('Vinagre',                       'Vinegar',                       'L',                       1.50);
+
+CREATE TABLE product_ingredient_cost (
+    id                      SERIAL PRIMARY KEY,
+    short_name              VARCHAR(100) NOT NULL,   -- product short name (es or code)
+    ingredient_es           VARCHAR(150) NOT NULL,   -- ingredient name in Spanish
+    ingredient_en           VARCHAR(150) NOT NULL,   -- ingredient name in English
+    base_quantity           DECIMAL(10,2) NOT NULL,
+    base_unit               VARCHAR(50) NOT NULL,    -- already bilingual for special units
+    unit_cost_eur           DECIMAL(10,2) NOT NULL,
+    base_total_cost_eur     DECIMAL(10,2) NOT NULL,
+    required_production     INT NOT NULL,
+    scaled_quantity         DECIMAL(10,2) NOT NULL,
+    scaled_total_cost_eur   DECIMAL(10,2) NOT NULL
+);
+
+INSERT INTO product_ingredient_cost (
+    short_name,
+    ingredient_es,
+    ingredient_en,
+    base_quantity,
+    base_unit,
+    unit_cost_eur,
+    base_total_cost_eur,
+    required_production,
+    scaled_quantity,
+    scaled_total_cost_eur
+) VALUES
+    -- Pozole Rojo
+    ('Pozole Rojo', 'Puerco', 'Pork', 20, 'kg', 10.00, 200.00, 100, 40.00, 400.00),
+    ('Pozole Rojo', 'Maíz para pozole precocido', 'Pre-cooked hominy corn', 2, 'Lata 3.1kg / Can 3.1kg', 16.95, 33.90, 100, 4.00, 67.80),
+    ('Pozole Rojo', 'Lechuga', 'Lettuce', 3, '300 gr', 2.14, 6.42, 100, 6.00, 12.84),
+    ('Pozole Rojo', 'Rábano', 'Radish', 5, '450 gr', 1.67, 8.35, 100, 10.00, 16.70),
+    ('Pozole Rojo', 'Cebolla', 'Onion', 5, 'kg', 1.20, 6.00, 100, 10.00, 12.00),
+    ('Pozole Rojo', 'Chile guajillo seco', 'Dried guajillo chili', 0.5, 'kg', 12.00, 6.00, 100, 1.00, 12.00),
+    ('Pozole Rojo', 'Ajo', 'Garlic', 0.2, 'kg', 4.00, 0.80, 100, 0.40, 1.60),
+    ('Pozole Rojo', 'Orégano seco', 'Dried oregano', 0.2, 'kg', 20.00, 4.00, 100, 0.40, 8.00),
+    ('Pozole Rojo', 'Sal', 'Salt', 0.15, 'kg', 0.80, 0.12, 100, 0.30, 0.24),
+    ('Pozole Rojo', 'Limón', 'Lime', 5, 'kg', 2.80, 14.00, 100, 10.00, 28.00),
+    ('Pozole Rojo', 'Tostadas', 'Tostadas (fried tortillas)', 5, 'kg', 6.00, 30.00, 100, 10.00, 60.00),
+    ('Pozole Rojo', 'Agua', 'Water', 40, 'L', 0.00, 0.00, 100, 80.00, 0.00),
+
+    -- Pozole Vegano
+    ('Pozole Vegano', 'Maíz para pozole precocido', 'Pre-cooked hominy corn', 6, 'Lata 800g / Can 800g', 3.00, 18.00, 100, 12.00, 36.00),
+    ('Pozole Vegano', 'Setas u hongos', 'Mushrooms', 4, 'kg', 7.00, 28.00, 100, 8.00, 56.00),
+    ('Pozole Vegano', 'Proteína de soja texturizada', 'Textured soy protein', 2, 'kg', 6.00, 12.00, 100, 4.00, 24.00),
+    ('Pozole Vegano', 'Caldo vegetal concentrado', 'Vegetable stock concentrate', 0.4, 'kg', 8.00, 3.20, 100, 0.80, 6.40),
+    ('Pozole Vegano', 'Lechuga', 'Lettuce', 5, 'pza / Piece', 1.80, 9.00, 100, 10.00, 18.00),
+    ('Pozole Vegano', 'Rábano', 'Radish', 5, 'kg', 2.50, 12.50, 100, 10.00, 25.00),
+    ('Pozole Vegano', 'Cebolla', 'Onion', 5, 'kg', 1.20, 6.00, 100, 10.00, 12.00),
+    ('Pozole Vegano', 'Chile guajillo seco', 'Dried guajillo chili', 0.5, 'kg', 12.00, 6.00, 100, 1.00, 12.00),
+    ('Pozole Vegano', 'Ajo', 'Garlic', 0.2, 'kg', 4.00, 0.80, 100, 0.40, 1.60),
+    ('Pozole Vegano', 'Orégano seco', 'Dried oregano', 0.2, 'kg', 20.00, 4.00, 100, 0.40, 8.00),
+    ('Pozole Vegano', 'Sal', 'Salt', 0.15, 'kg', 0.80, 0.12, 100, 0.30, 0.24),
+    ('Pozole Vegano', 'Limón', 'Lime', 5, 'kg', 2.80, 14.00, 100, 10.00, 28.00),
+    ('Pozole Vegano', 'Tostadas', 'Tostadas (fried tortillas)', 5, 'kg', 6.00, 30.00, 100, 10.00, 60.00),
+    ('Pozole Vegano', 'Agua', 'Water', 40, 'L', 0.00, 0.00, 100, 80.00, 0.00),
+
+    -- Nachos
+    ('Nachos', 'Totopos (nachos)', 'Tortilla chips (nachos)', 5, 'kg', 4.50, 22.50, 100, 10.00, 45.00),
+    ('Nachos', 'Aguacate', 'Avocado', 4, 'kg', 4.50, 18.00, 100, 8.00, 36.00),
+    ('Nachos', 'Tomate', 'Tomato', 1.5, 'kg', 2.00, 3.00, 100, 3.00, 6.00),
+    ('Nachos', 'Cebolla', 'Onion', 0.8, 'kg', 1.20, 0.96, 100, 1.60, 1.92),
+    ('Nachos', 'Cilantro', 'Coriander (cilantro)', 0.3, 'kg', 8.00, 2.40, 100, 0.60, 4.80),
+    ('Nachos', 'Limón', 'Lime', 2, 'kg', 2.80, 5.60, 100, 4.00, 11.20),
+    ('Nachos', 'Chile serrano', 'Serrano chili', 0.2, 'kg', 5.00, 1.00, 100, 0.40, 2.00),
+    ('Nachos', 'Sal', 'Salt', 0.05, 'kg', 0.80, 0.04, 100, 0.10, 0.08),
+    ('Nachos', 'Frijoles refritos', 'Refried beans', 3, 'kg', 2.50, 7.50, 100, 6.00, 15.00),
+    ('Nachos', 'Queso rallado', 'Grated cheese', 2, 'kg', 8.00, 16.00, 100, 4.00, 32.00),
+    ('Nachos', 'Crema', 'Cream', 1, 'L', 3.50, 3.50, 100, 2.00, 7.00),
+    ('Nachos', 'Jalapeños en vinagre', 'Pickled jalapeños', 0.5, 'kg', 4.00, 2.00, 100, 1.00, 4.00),
+    ('Nachos', 'Salsa roja', 'Red salsa', 1, 'kg', 2.50, 2.50, 100, 2.00, 5.00),
+
+    -- Nachos Veganos
+    ('Nachos Veganos', 'Totopos (nachos)', 'Tortilla chips (nachos)', 5, 'kg', 4.50, 22.50, 100, 10.00, 45.00),
+    ('Nachos Veganos', 'Aguacate', 'Avocado', 4.5, 'kg', 4.50, 20.25, 100, 9.00, 40.50),
+    ('Nachos Veganos', 'Tomate', 'Tomato', 1.5, 'kg', 2.00, 3.00, 100, 3.00, 6.00),
+    ('Nachos Veganos', 'Cebolla', 'Onion', 0.8, 'kg', 1.20, 0.96, 100, 1.60, 1.92),
+    ('Nachos Veganos', 'Cilantro', 'Coriander (cilantro)', 0.3, 'kg', 8.00, 2.40, 100, 0.60, 4.80),
+    ('Nachos Veganos', 'Limón', 'Lime', 2, 'kg', 2.80, 5.60, 100, 4.00, 11.20),
+    ('Nachos Veganos', 'Chile serrano', 'Serrano chili', 0.2, 'kg', 5.00, 1.00, 100, 0.40, 2.00),
+    ('Nachos Veganos', 'Sal', 'Salt', 0.05, 'kg', 0.80, 0.04, 100, 0.10, 0.08),
+    ('Nachos Veganos', 'Frijoles refritos veganos', 'Vegan refried beans', 3, 'kg', 2.80, 8.40, 100, 6.00, 16.80),
+    ('Nachos Veganos', 'Queso rallado vegano', 'Vegan grated cheese', 2, 'kg', 11.00, 22.00, 100, 4.00, 44.00),
+    ('Nachos Veganos', 'Crema vegana', 'Vegan cream', 1, 'L', 4.50, 4.50, 100, 2.00, 9.00),
+    ('Nachos Veganos', 'Jalapeños en vinagre', 'Pickled jalapeños', 0.5, 'kg', 4.00, 2.00, 100, 1.00, 4.00),
+    ('Nachos Veganos', 'Salsa roja', 'Red salsa', 1, 'kg', 2.50, 2.50, 100, 2.00, 5.00),
+
+    -- Chilaquiles
+    ('Chilaquiles', 'Tortillas de maíz (para freír)', 'Corn tortillas (for frying)', 80, 'pza / Piece', 0.12, 9.60, 100, 160.00, 19.20),
+    ('Chilaquiles', 'Aceite vegetal', 'Vegetable oil', 2, 'L', 2.50, 5.00, 100, 4.00, 10.00),
+    ('Chilaquiles', 'Salsa verde o roja', 'Green or red salsa', 5, 'L', 3.00, 15.00, 100, 10.00, 30.00),
+    ('Chilaquiles', 'Queso fresco', 'Fresh cheese', 2, 'kg', 8.00, 16.00, 100, 4.00, 32.00),
+    ('Chilaquiles', 'Crema', 'Cream', 1, 'L', 3.50, 3.50, 100, 2.00, 7.00),
+    ('Chilaquiles', 'Cebolla', 'Onion', 1, 'kg', 1.20, 1.20, 100, 2.00, 2.40),
+    ('Chilaquiles', 'Cilantro', 'Coriander (cilantro)', 0.4, 'kg', 8.00, 3.20, 100, 0.80, 6.40),
+    ('Chilaquiles', 'Sal', 'Salt', 0.05, 'kg', 0.80, 0.04, 100, 0.10, 0.08),
+    ('Chilaquiles', 'Frijoles refritos', 'Refried beans', 3, 'kg', 2.50, 7.50, 100, 6.00, 15.00),
+
+    -- Chilaquiles Veganos
+    ('Chilaquiles Veganos', 'Tortillas de maíz (para freír)', 'Corn tortillas (for frying)', 80, 'pza / Piece', 0.12, 9.60, 100, 160.00, 19.20),
+    ('Chilaquiles Veganos', 'Aceite vegetal', 'Vegetable oil', 2, 'L', 2.50, 5.00, 100, 4.00, 10.00),
+    ('Chilaquiles Veganos', 'Salsa verde o roja', 'Green or red salsa', 5, 'L', 3.00, 15.00, 100, 10.00, 30.00),
+    ('Chilaquiles Veganos', 'Queso rallado vegano', 'Vegan grated cheese', 2, 'kg', 11.00, 22.00, 100, 4.00, 44.00),
+    ('Chilaquiles Veganos', 'Crema vegana', 'Vegan cream', 1, 'L', 4.50, 4.50, 100, 2.00, 9.00),
+    ('Chilaquiles Veganos', 'Cebolla', 'Onion', 1, 'kg', 1.20, 1.20, 100, 2.00, 2.40),
+    ('Chilaquiles Veganos', 'Cilantro', 'Coriander (cilantro)', 0.4, 'kg', 8.00, 3.20, 100, 0.80, 6.40),
+    ('Chilaquiles Veganos', 'Sal', 'Salt', 0.05, 'kg', 0.80, 0.04, 100, 0.10, 0.08),
+    ('Chilaquiles Veganos', 'Frijoles refritos veganos', 'Vegan refried beans', 3, 'kg', 2.80, 8.40, 100, 6.00, 16.80),
+
+    -- Tacos al Pastor
+    ('Tacos al Pastor', 'Carne de cerdo', 'Pork meat', 5, 'kg', 7.00, 35.00, 100, 10.00, 70.00),
+    ('Tacos al Pastor', 'Achiote en pasta', 'Achiote paste', 0.35, 'kg', 10.00, 3.50, 100, 0.70, 7.00),
+    ('Tacos al Pastor', 'Vinagre', 'Vinegar', 0.5, 'L', 1.50, 0.75, 100, 1.00, 1.50),
+    ('Tacos al Pastor', 'Jugo de naranja', 'Orange juice', 1, 'L', 2.00, 2.00, 100, 2.00, 4.00),
+    ('Tacos al Pastor', 'Ajo', 'Garlic', 0.15, 'kg', 4.00, 0.60, 100, 0.30, 1.20),
+    ('Tacos al Pastor', 'Cebolla', 'Onion', 0.5, 'kg', 1.20, 0.60, 100, 1.00, 1.20),
+    ('Tacos al Pastor', 'Sal', 'Salt', 0.08, 'kg', 0.80, 0.06, 100, 0.16, 0.13),
+    ('Tacos al Pastor', 'Especias mixtas', 'Mixed spices', 0.1, 'kg', 18.00, 1.80, 100, 0.20, 3.60),
+    ('Tacos al Pastor', 'Tortillas de maíz', 'Corn tortillas', 180, 'pza / Piece', 0.12, 21.60, 100, 360.00, 43.20),
+    ('Tacos al Pastor', 'Piña', 'Pineapple', 2, 'kg', 2.20, 4.40, 100, 4.00, 8.80),
+    ('Tacos al Pastor', 'Cebolla', 'Onion', 1.5, 'kg', 1.20, 1.80, 100, 3.00, 3.60),
+    ('Tacos al Pastor', 'Cilantro', 'Coriander (cilantro)', 0.6, 'kg', 8.00, 4.80, 100, 1.20, 9.60),
+    ('Tacos al Pastor', 'Limón', 'Lime', 3, 'kg', 2.80, 8.40, 100, 6.00, 16.80),
+    ('Tacos al Pastor', 'Aceite vegetal', 'Vegetable oil', 0.5, 'L', 2.50, 1.25, 100, 1.00, 2.50),
+
+    -- Tacos de Carnitas
+    ('Tacos de Carnitas', 'Carne de cerdo (pierna/paleta)', 'Pork leg/shoulder', 6, 'kg', 6.50, 39.00, 100, 12.00, 78.00),
+    ('Tacos de Carnitas', 'Manteca de cerdo', 'Pork lard', 0.8, 'kg', 4.00, 3.20, 100, 1.60, 6.40),
+    ('Tacos de Carnitas', 'Naranja', 'Orange', 1.5, 'kg', 2.00, 3.00, 100, 3.00, 6.00),
+    ('Tacos de Carnitas', 'Leche', 'Milk', 0.5, 'L', 1.20, 0.60, 100, 1.00, 1.20),
+    ('Tacos de Carnitas', 'Coca-Cola (o refresco)', 'Cola (soft drink)', 0.5, 'L', 1.50, 0.75, 100, 1.00, 1.50),
+    ('Tacos de Carnitas', 'Ajo', 'Garlic', 0.1, 'kg', 4.00, 0.40, 100, 0.20, 0.80),
+    ('Tacos de Carnitas', 'Cebolla', 'Onion', 0.5, 'kg', 1.20, 0.60, 100, 1.00, 1.20),
+    ('Tacos de Carnitas', 'Sal', 'Salt', 0.08, 'kg', 0.80, 0.06, 100, 0.16, 0.13),
+    ('Tacos de Carnitas', 'Especias mixtas', 'Mixed spices', 0.05, 'kg', 18.00, 0.90, 100, 0.10, 1.80),
+    ('Tacos de Carnitas', 'Tortillas de maíz', 'Corn tortillas', 180, 'pza / Piece', 0.12, 21.60, 100, 360.00, 43.20),
+    ('Tacos de Carnitas', 'Cebolla', 'Onion', 1.5, 'kg', 1.20, 1.80, 100, 3.00, 3.60),
+    ('Tacos de Carnitas', 'Cilantro', 'Coriander (cilantro)', 0.6, 'kg', 8.00, 4.80, 100, 1.20, 9.60),
+    ('Tacos de Carnitas', 'Limón', 'Lime', 3, 'kg', 2.80, 8.40, 100, 6.00, 16.80);
+
+
+
+
+
